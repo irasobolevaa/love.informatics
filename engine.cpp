@@ -2,7 +2,8 @@
 #include <map>
 #include <vector>
 #include <string>
-#include<SFML/Graphics.hpp>
+#include <SFML/Graphics.hpp>
+#include <type_traits>
 
 
 
@@ -10,6 +11,8 @@ class GameObject;
 class Component;
 class RenderController;
 class Renderer;
+class Script;
+class ScriptController;
 
 
 class DataStorage{
@@ -39,6 +42,17 @@ private:
 
 
 
+class ScriptController{
+private:
+	std::vector<Component*> scripts;
+public:
+	void appendScript(Component* script);
+	void removeScript(Component* script);
+	void update();
+};
+
+
+
 class Singleton_R_C{
 private:
 	static Singleton_R_C* instance;
@@ -47,6 +61,7 @@ private:
 	Singleton_R_C& operator=( Singleton_R_C& ){};
 public:
 	RenderController render_controller;
+	ScriptController script_controller;
 	static Singleton_R_C* getInstance();
 	static void deleteInstance();
 };
@@ -93,15 +108,20 @@ void GameObject:: addComponent(){
 		this->components[typeid(T).name()] = new_component;
 		if (typeid(Renderer).name() == typeid(T).name())
 			Singleton_R_C::getInstance()->render_controller.appendObject(this);
+		if (std::is_base_of<Script, T>::value){
+			std::cout << "qwerty" << std::endl;
+			Singleton_R_C::getInstance()->script_controller.appendScript(new_component);
+		}
 	}
 }
 
 template<typename T>
 void GameObject:: removeComponent(){
 	if (this->components.find(typeid(T).name()) != this->components.end()){
-		std::vector<GameObject*>::iterator beg, end, it_rm_obj;
 		if (typeid(Renderer).name() == typeid(T).name())
 			Singleton_R_C::getInstance()->render_controller.removeObject(this);
+		if (std::is_base_of<Script, T>::value)
+			Singleton_R_C::getInstance()->script_controller.removeScript(static_cast<T*>(this->components.find(typeid(T).name())->second));
 		delete this->components[typeid(T).name()];
 		this->components.erase(typeid(T).name());
 	}
@@ -151,11 +171,7 @@ public:
 	~Renderer() override;
 };
 
-Renderer:: ~Renderer(){
-	delete this->texture;
-	delete this->image;
-	delete this->sprite;
-};
+Renderer:: ~Renderer(){};
 
 void Renderer::makeSprite(std::string file_name){
 	if(!this->image.loadFromFile(file_name)){
@@ -175,8 +191,6 @@ void Renderer::setPosOfSprite(sf::Vector2f vec){
 sf::Sprite Renderer::getSprite(){
 	return this->sprite;
 }
-	
-
 
 void RenderController::drawAll(){
 	float x,y;
@@ -184,7 +198,7 @@ void RenderController::drawAll(){
 	auto end = this->rend_objects.end();
 	for (auto it = beg; it != end; it++){
 		x = this->size_x/2 + (*it)->x;
-		y = this->size_y/2 - (*it)->y;
+		y = this->size_y/2 + (*it)->y;
 		(*it)->getComponent<Renderer>()->setPosOfSprite(sf::Vector2f(x, y));
 		this->window.draw((*it)->getComponent<Renderer>()->getSprite());
 	}
@@ -206,13 +220,67 @@ void RenderController::makeWindow(){
 }
 
 
+class Script: public Component{
+public:
+	virtual void execute() = 0;
+};
+
+
+
+void ScriptController::update(){
+	auto beg = this->scripts.begin();
+	auto end = this->scripts.end();
+	for (auto it = beg; it != end; it++){
+		static_cast<Script*>((*it))->execute();
+	}
+}
+
+void ScriptController::appendScript(Component* script){
+	this->scripts.push_back(script);
+}
+
+void ScriptController::removeScript(Component* script){
+	auto beg = this->scripts.begin();
+	auto end = this->scripts.end();
+	auto it_rm_sc = find(beg, end, script);
+	this->scripts.erase(it_rm_sc);
+}
+	
+		
+class Print: public Script{
+public:
+	void execute() override{
+		std::cout << "qwerty" << std::endl;
+	}
+};
+
+
+
+class MoveByKeys:public Script{
+	void execute() override;
+};
+
+void MoveByKeys::execute(){
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		this->obj->x -=0.3;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		this->obj->x +=0.3;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		this->obj->y -=0.3;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		this->obj->y +=0.3;
+}
+
+
+
 
 int main(){
 	GameObject obj;
 	obj.addComponent<Renderer>();
+	obj.addComponent<MoveByKeys>();
 	Renderer* r = new Renderer;
 	r = obj.getComponent<Renderer>();
-	r->makeSprite("image.jpg");
+	r->makeSprite("image_2.png");
 	Singleton_R_C::getInstance()->render_controller.makeWindow();
 	while (Singleton_R_C::getInstance()->render_controller.window.isOpen()){        //window cтоит сделать private в Renderer и написать ф-цию getWindow
         	sf::Event event;
@@ -223,6 +291,7 @@ int main(){
 
         	Singleton_R_C::getInstance()->render_controller.window.clear();
 		Singleton_R_C::getInstance()->render_controller.drawAll();
+		Singleton_R_C::getInstance()->script_controller.update();
         	Singleton_R_C::getInstance()->render_controller.window.display();
 	}
 	std::cout << typeid(r).name() << std::endl;
@@ -232,6 +301,5 @@ int main(){
 	obj.removeComponent<Renderer>();
 	obj.removeComponent<Collider>(); //При вызове delete component_name - segmenation fault!
 	Singleton_R_C::deleteInstance();
-	std::cout << "qwerty" << std::endl;
 	return 0;
 }
