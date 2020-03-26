@@ -15,7 +15,7 @@ public:
 	ScriptController script_controller;
 	static Singleton_R_C* getInstance();
 	static void deleteInstance();
+	static void runApplication();
 };
-
 
 #endif

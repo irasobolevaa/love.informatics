@@ -36,20 +36,6 @@ int main(){
 	Renderer* r = new Renderer;
 	r = obj.getComponent<Renderer>();
 	r->makeSprite("image_2.png");
-	Singleton_R_C::getInstance()->render_controller.makeWindow();
-	while (Singleton_R_C::getInstance()->render_controller.window.isOpen()){        //window cтоит сделать private в Renderer и написать ф-цию getWindow
-        	sf::Event event;
-        	while (Singleton_R_C::getInstance()->render_controller.window.pollEvent(event)){
-            		if (event.type == sf::Event::Closed)
-                		Singleton_R_C::getInstance()->render_controller.window.close();
-        	}
-
-        	Singleton_R_C::getInstance()->render_controller.window.clear();
-		Singleton_R_C::getInstance()->render_controller.drawAll();
-		Singleton_R_C::getInstance()->script_controller.update();
-        	Singleton_R_C::getInstance()->render_controller.window.display();
-	}
-	std::cout << typeid(r).name() << std::endl;
-	Singleton_R_C::deleteInstance();
+	Singleton_R_C::runApplication();
 	return 0;
 }
