@@ -1,8 +1,8 @@
 #ifndef __SINGLETON_H__
 #define __SINGLETON_H__
 
-#include "render_controller.h"
-//#include "script_controller.h"
+#include "graphics.h"
+#include "scripts.h"
 
 class Singleton_R_C{
 private:
@@ -12,7 +12,7 @@ private:
 	Singleton_R_C& operator=( Singleton_R_C& ){};
 public:
 	RenderController render_controller;
-//	ScriptController script_controller;
+	ScriptController script_controller;
 	static Singleton_R_C* getInstance();
 	static void deleteInstance();
 };

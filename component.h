@@ -2,7 +2,10 @@
 #define __COMPONENT_H__
 
 #include <string>
-#include "game_object.h"
+
+
+class GameObject;
+
 
 class Component{
 private:
@@ -11,9 +14,6 @@ public:
 	GameObject* obj;
 	virtual ~Component() = 0;
 };
-
-
-Component:: ~Component(){};
 
 
 #endif
