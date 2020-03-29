@@ -4,29 +4,32 @@
 #include<iostream>
 #include<string>
 
-void createObject(std::string object_name)
+void DataStorage::createObject(std::string object_name)
 {
     if (getObject(object_name) == nullptr)
     {
-        GameObject* obj = new GameObject(object_name);
-        obj.name = object_name;
+        GameObject* obj = new GameObject;
+        obj->name = object_name;
         this->objects.push_back(obj);
     }
 }
 
-void deleteObject(std::string object_name)
+void DataStorage::deleteObject(std::string object_name)
 {
     GameObject* obj = getObject(object_name);
-    if(obj != )
+    if(obj != nullptr)
     {
-        objects.erase(obj);
+	auto beg = this->objects.begin();
+	auto end = this->objects.end();
+	auto it_rm_obj = find(beg, end, obj);
+        this->objects.erase(it_rm_obj);
         delete obj;
     }
 }   
 
-GameObject* getObject(std::string object_name)
+GameObject* DataStorage::getObject(std::string object_name)
 {
 	for (auto i = this->objects.begin(); i != this->objects.end(); i++)
 		if ((*i)->name == object_name) 
-			return *it
+			return *i;
 }
