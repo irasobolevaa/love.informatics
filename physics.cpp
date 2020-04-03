@@ -18,7 +18,7 @@ void PhysicsController::update(){
         for (auto it = beg; it != end; it++){
                 for (auto jt = it; jt != end; jt++){
                 	if((*it)->getComponent<Collider>()->isCollided(*jt)){
-				onCollision();
+				(*it)->getComponent<Collider>()->onCollision();
 			}
         	}
 	}
@@ -33,7 +33,7 @@ void PhysicsController::removeObject(GameObject* obj){
         auto end = this->phys_objects.end();
         auto it_rm_obj = find(beg, end, obj);
         this->phys_objects.erase(it_rm_obj);
-
+}
 
 bool Collider::isCollided(GameObject* sample){
 	for (int i = 0; i < this->phys_model.getPointCount() - 1; i++){
@@ -47,7 +47,7 @@ bool Collider::isCollided(GameObject* sample){
         return false;
 }
 
-void Collider::makeModel(sf::CovexShape sample){
+void Collider::makeModel(sf::ConvexShape sample){
 	this->phys_model = sample;
 }
 
