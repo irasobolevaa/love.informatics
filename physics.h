@@ -24,7 +24,7 @@ public:
         void makeModel(sf::ConvexShape sample);
 	sf::ConvexShape getModel();
 	bool isCollided(GameObject* sample);
-	virtual void onCollision() = 0;
+	virtual void onCollision();
         ~Collider() override;
 };
 
