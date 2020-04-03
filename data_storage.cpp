@@ -9,7 +9,10 @@ void DataStorage::createObject(std::string object_name)
     if (getObject(object_name) == nullptr)
     {
         GameObject* obj = new GameObject;
+	obj = nullptr;
+	std::cout << "qwerty_1" << std::endl;
         obj->name = object_name;
+	std::cout << "qwerty_2" << std::endl;
         this->objects.push_back(obj);
     }
 }
@@ -28,8 +31,10 @@ void DataStorage::deleteObject(std::string object_name)
 }   
 
 GameObject* DataStorage::getObject(std::string object_name)
-{
+{	
+	std::cout << "from get obj" << std::endl;
 	for (auto i = this->objects.begin(); i != this->objects.end(); i++)
-		if ((*i)->name == object_name) 
+		if ((*i)->name == object_name)
 			return *i;
+	return nullptr;
 }
