@@ -45,6 +45,24 @@ int main(){
 	return 0;
 }
 ```
+## Components
+### ge::Renderer
+Applies graphics to game object. 
+### ge::Collider
+Apllies physics to game object. Incudes checking collision between object with such component.
+For adding various collision solvings, make your own class and otnasleduyte it from `ge::Collider` class with creating method `onCollision()` in it.
+Example:
+```
+class WallCollision: public Collider{ 
+void onCollision() override;
+};
+WallCollision::onCollision(){
+...your logics...
+}
+```
+### ge::Scripts
+You can add your own settings to game object by using scripts.
+For this purpose, you need to 
 ## Functions
 ### void ge::runApplication(); 
 Opening main window
