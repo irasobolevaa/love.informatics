@@ -51,7 +51,9 @@ int main(){
 	vec.push_back(100);
 	vec.push_back(200);
 	ge::Vertex vert = ge::Vertex(vec);
-	ge::makeModelOfCollider<CustomCollider>(vert);
+	ge::makeModelOfCollider<CustomCollider>(vert, ge::getObject("ball"));
+	ge::makeModelOfCollider<CustomCollider>(vert, ge::getObject("obj"));
+	std::cout << "qwerty" << std::endl;
 
 	ge::addComponent<MoveByKeys>("ball");
 	ge::makeSprite(ge::getObject("ball"), "image_2.png");

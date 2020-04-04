@@ -22,26 +22,13 @@ public:
 class PhysicsController{
 public:
         void update();
-        void appendCollider(Component* col, std::string name);
-        void removeCollider(std::string name);
-	template <typename T>
-	Collider* getCollider();
+        void appendCollider(Component* col);
+        void removeCollider(Component* col);
 private:
-        std::map<std::string, Component*> colliders;
+        std::vector<Component*> colliders;
 
 };
 
-
-template <typename T>
-Collider* PhysicsController::getCollider(){
-	auto beg = this->colliders.begin();
-	auto end = this->colliders.end();
-	for (auto i = beg; i != end; i++){
-	       if (i->first == typeid(T).name())
-			return static_cast<T*>(i->second);
-	return nullptr;
-	}
-}	
 
 
 

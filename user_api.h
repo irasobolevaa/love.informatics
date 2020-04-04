@@ -28,7 +28,7 @@ namespace ge{
 		}
 	};
 	template <typename T>
-	void makeModelOfCollider(ge::Vertex vert);
+	void makeModelOfCollider(ge::Vertex vert, GameObject* obj);
 
 
 	
@@ -49,7 +49,7 @@ void ge::removeComponent(std::string object_name){
 }
 
 template <typename T>
-void ge::makeModelOfCollider(Vertex vert){
+void ge::makeModelOfCollider(Vertex vert, GameObject* obj){
 	sf::ConvexShape* convex = new sf::ConvexShape;
 	convex->setPointCount(vert.vertex.size());
 	int j = 0;
@@ -57,7 +57,8 @@ void ge::makeModelOfCollider(Vertex vert){
 		convex->setPoint(j, *i);
 		j++;
 	}
-	Singleton_R_C::getInstance()->physics_controller.getCollider<T>()->makeModel(*convex);
+	if (std::is_base_of<Collider, T>::value)
+		obj->getComponent<T>()->makeModel(*convex);
 }
 
 

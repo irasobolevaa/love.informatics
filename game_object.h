@@ -36,7 +36,7 @@ void GameObject:: addComponent(){
 			Singleton_R_C::getInstance()->script_controller.appendScript(new_component);
 		}
 		if (std::is_base_of<Collider, T>::value){
-			Singleton_R_C::getInstance()->physics_controller.appendCollider(new_component, typeid(T).name());
+			Singleton_R_C::getInstance()->physics_controller.appendCollider(new_component);
 		}
 	}
 }
@@ -49,7 +49,7 @@ void GameObject:: removeComponent(){
 		if (std::is_base_of<Script, T>::value)
 			Singleton_R_C::getInstance()->script_controller.removeScript(static_cast<T*>(this->components.find(typeid(T).name())->second));
 		if (std::is_base_of<Collider, T>::value)
-			Singleton_R_C::getInstance()->physics_controller.removeCollider(typeid(T).name());
+			Singleton_R_C::getInstance()->physics_controller.removeCollider(static_cast<T*>(this->components.find(typeid(T).name())->second));
 		delete this->components[typeid(T).name()];
 		this->components.erase(typeid(T).name());
 	}
