@@ -61,8 +61,9 @@ Deleting an object of class GameObject named 'object_name'
 ### GameObject* getObject(std::string object_name);
 Finding an object of class GameObject named 'object_name'
 
-### template <**typename T> void addComponent(std::string object_name);**
-	Adding components to 'object_name'
+### template <**typename T> 
+void addComponent(std::string object_name);**
+Adding components to 'object_name'
 	
 	template <typename T>
 	void removeComponent(std::string object_name);
