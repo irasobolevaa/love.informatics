@@ -50,7 +50,7 @@ int main(){
 Opening main window
 
 ### bool makeSprite(GameObject* obj, std::string file_name);
-Making sprite from file named file_name. This file should be 
+Making sprite from file named file_name; This file should be in the project folder
 
 ### void createObject(std::string object_name);
 Creating an object of class GameObject named 'object_name'
