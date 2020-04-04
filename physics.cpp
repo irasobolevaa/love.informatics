@@ -17,29 +17,30 @@ void PhysicsController::update(){
         auto end = this->colliders.end();
         for (auto it = beg; it != end; it++){
                 for (auto jt = it; jt != end; jt++){
-			if((*it)->isCollided(*jt)){
-				(*it)->onCollision();
+			if((it != jt) && (static_cast<Collider*>((it->second)))->isCollided(static_cast<Collider*>(jt->second))){
+				(static_cast<Collider*>(it->second))->onCollision();
 			}
         	}
 	}
 }
 
-void PhysicsController::appendCollider(Collider* col){
-        this->colliders.push_back(col);
+void PhysicsController::appendCollider(Component* col, std::string name){
+	if (colliders.find(name) == this->colliders.end()){
+        	static_cast<Collider*>(col)->setName(name);
+		this->colliders[name] = col;
+	}
+
 }
 
-void PhysicsController::removeCollider(Collider* col){
-        auto beg = this->colliders.begin();
-        auto end = this->colliders.end();
-        auto it_rm_col = find(beg, end, col);
-        this->colliders.erase(it_rm_col);
+void PhysicsController::removeCollider(std::string name){
+        this->colliders.erase(name);
 }
 
 bool Collider::isCollided(Collider* sample){
 	for (int i = 0; i < this->phys_model.getPointCount() - 1; i++){
                 for (int j = 0; j < sample->phys_model.getPointCount() - 1; j++){
                         if (segmentCollision(this->phys_model.getPoint(i),this->phys_model.getPoint(i+1),sample->phys_model.getPoint(j),sample->phys_model.getPoint(j+1))){
-                                return true;
+				return true;
                                 break;
                         }
                 }
@@ -53,4 +54,8 @@ void Collider::makeModel(sf::ConvexShape sample){
 
 sf::ConvexShape Collider::getModel(){
 	return this->phys_model;
+}
+
+void Collider::setName(std::string name){
+	this->name = name;
 }

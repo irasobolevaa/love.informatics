@@ -9,6 +9,7 @@ public:
 	void createObject(std::string object_name);
 	void deleteObject(std::string object_name);
 	GameObject* getObject(std::string object_name);
+	~DataStorage();
 private:
 	std::vector<GameObject*> objects;
 };

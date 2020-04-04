@@ -12,8 +12,11 @@ public:
 	void drawAll();
 	void appendObject(GameObject* obj);
 	void removeObject(GameObject* obj);
-	void makeWindow();
+	void makeWindow(); 
+	void setWindowSize(float x, float y);
+	void setTitle(std::string title);
 private:
+	std::string title = "default_1";
 	float size_x = 800;
 	float size_y = 600;
 	std::vector<GameObject*> rend_objects;

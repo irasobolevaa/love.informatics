@@ -57,7 +57,7 @@ void ge::makeModelOfCollider(Vertex vert){
 		convex->setPoint(j, *i);
 		j++;
 	}
-	Singleton_R_C::getInstance()->physics_controller.getCollider<T>->makeModel(convex);
+	Singleton_R_C::getInstance()->physics_controller.getCollider<T>()->makeModel(*convex);
 }
 
 

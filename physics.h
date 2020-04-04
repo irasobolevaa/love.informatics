@@ -10,23 +10,24 @@ class Collider :public Component{
 private:
         sf::ConvexShape phys_model;
 public:
+	std::string name;
         void makeModel(sf::ConvexShape sample);
+	void setName(std::string name);
 	sf::ConvexShape getModel();
 	bool isCollided(Collider* sample);
-	virtual void onCollision();
-        ~Collider() override;
+	virtual void onCollision() = 0;
 };
 
 
 class PhysicsController{
 public:
         void update();
-        void appendCollider(Collider* col);
-        void removeCollider(Collider* col);
+        void appendCollider(Component* col, std::string name);
+        void removeCollider(std::string name);
 	template <typename T>
 	Collider* getCollider();
 private:
-        std::vector<Collider*> colliders;
+        std::map<std::string, Component*> colliders;
 
 };
 
@@ -35,9 +36,9 @@ template <typename T>
 Collider* PhysicsController::getCollider(){
 	auto beg = this->colliders.begin();
 	auto end = this->colliders.end();
-	for (auto i = beg; i != end;){
-	       if (typeid(*i).name == typeid(T).name)
-			return *i
+	for (auto i = beg; i != end; i++){
+	       if (i->first == typeid(T).name())
+			return static_cast<T*>(i->second);
 	return nullptr;
 	}
 }	
