@@ -45,18 +45,51 @@ int main(){
 	return 0;
 }
 ```
+## Components
+### ge::Renderer
+Applies graphics to game object. 
+### ge::Collider
+Apllies physics to game object. Incudes checking collision between object with such component.
+For adding various collision solvings, make your own class and otnasleduyte it from `ge::Collider` class with creating method `onCollision()` in it.
+Example:
+```
+class WallCollision: public Collider{ 
+void onCollision() override;
+};
+WallCollision::onCollision(){
+...your logics...
+}
+```
+### ge::Scripts
+You can add your own settings to game object by using scripts.
+For this purpose, you need to 
 ## Functions
-void ge::runApplication();
-	bool makeSprite(GameObject* obj, std::string file_name);
-	void createObject(std::string object_name);
-	void deleteObject(std::string object_name);
-	GameObject* getObject(std::string object_name);
-	template <typename T>
-	void addComponent(std::string object_name);
-	template <typename T>
-	void removeComponent(std::string object_name);
-	void setWindowTitle(std::string title);
-	void setWindowSize(float x, float y);
+### void ge::runApplication(); 
+Opening main window
+
+### bool makeSprite(GameObject* obj, std::string file_name);
+Making sprite from file named file_name; This file should be in the project folder
+
+### void createObject(std::string object_name);
+Creating an object of class GameObject named 'object_name'
+
+### void deleteObject(std::string object_name);
+Deleting an object of class GameObject named 'object_name'
+
+### GameObject* getObject(std::string object_name);
+Finding an object of class GameObject named 'object_name'
+
+### template <**typename T> void addComponent(std::string object_name);**
+Adding component 'T' to game object 'object_name'. See **Components**
+	
+### template <**typename T> void removeComponent(std::string object_name);**
+Removing component 'T' from game object 'object_name'. See **Components**
+	
+### void setWindowTitle(std::string title);
+Setting window title 
+
+### void setWindowSize(float x, float y);
+Setting window size using coordinates x and y
 
 
 
