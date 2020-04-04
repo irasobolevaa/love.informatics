@@ -32,14 +32,7 @@ void ge::setWindowTitle(std::string title){
 	Singleton_R_C::getInstance()->render_controller.setTitle(title);
 }
 
-void ge::Vertex::Vertex(std::vector<int> coordinates){
-	for (auto i = coordinates.begin(); i != coordinates.end(); i++){
-		auto j = i;
-		j++;
-		this->vertex.push_back(sf::Vector2f(*i, *j));
-		i++;
-	}
-}
+
 
 
 
