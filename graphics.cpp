@@ -25,7 +25,7 @@ void RenderController::removeObject(GameObject* obj){
 }
 
 void RenderController::makeWindow(){
-	this->window.create(sf::VideoMode(this->size_x, this->size_y), "Works!");
+	this->window.create(sf::VideoMode(this->size_x, this->size_y), this->title);
 }
 
 
@@ -49,4 +49,13 @@ void Renderer::setPosOfSprite(sf::Vector2f vec){
 
 sf::Sprite Renderer::getSprite(){
 	return this->sprite;
+}
+
+void RenderController::setWindowSize(float x, float y){
+	this->size_x = x;
+	this->size_y = y;
+}
+
+void RenderController::setTitle(std::string title){
+	this->title = title;
 }

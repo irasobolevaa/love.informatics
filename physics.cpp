@@ -13,32 +13,32 @@ bool segmentCollision (sf::Vector2f A1, sf::Vector2f A2, sf::Vector2f B1, sf::Ve
 }
 
 void PhysicsController::update(){
-	auto beg = this->phys_objects.begin();
-        auto end = this->phys_objects.end();
+	auto beg = this->colliders.begin();
+        auto end = this->colliders.end();
         for (auto it = beg; it != end; it++){
                 for (auto jt = it; jt != end; jt++){
-                	if((*it)->getComponent<Collider>()->isCollided(*jt)){
-				(*it)->getComponent<Collider>()->onCollision();
+			if((*it)->isCollided(*jt)){
+				(*it)->onCollision();
 			}
         	}
 	}
 }
 
-void PhysicsController::appendObject(GameObject* obj){
-        this->phys_objects.push_back(obj);
+void PhysicsController::appendCollider(Collider* col){
+        this->colliders.push_back(col);
 }
 
-void PhysicsController::removeObject(GameObject* obj){
-        auto beg = this->phys_objects.begin();
-        auto end = this->phys_objects.end();
-        auto it_rm_obj = find(beg, end, obj);
-        this->phys_objects.erase(it_rm_obj);
+void PhysicsController::removeCollider(Collider* col){
+        auto beg = this->colliders.begin();
+        auto end = this->colliders.end();
+        auto it_rm_col = find(beg, end, col);
+        this->colliders.erase(it_rm_col);
 }
 
-bool Collider::isCollided(GameObject* sample){
+bool Collider::isCollided(Collider* sample){
 	for (int i = 0; i < this->phys_model.getPointCount() - 1; i++){
-                for (int j = 0; j < sample->getComponent<Collider>()->phys_model.getPointCount() - 1; j++){
-                        if (segmentCollision(this->phys_model.getPoint(i),this->phys_model.getPoint(i+1),sample->getComponent<Collider>()->phys_model.getPoint(j),sample->getComponent<Collider>()->phys_model.getPoint(j+1))){
+                for (int j = 0; j < sample->phys_model.getPointCount() - 1; j++){
+                        if (segmentCollision(this->phys_model.getPoint(i),this->phys_model.getPoint(i+1),sample->phys_model.getPoint(j),sample->phys_model.getPoint(j+1))){
                                 return true;
                                 break;
                         }

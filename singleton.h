@@ -4,6 +4,7 @@
 #include "graphics.h"
 #include "scripts.h"
 #include "data_storage.h"
+#include "physics.h"
 
 class Singleton_R_C{
 private:
@@ -15,6 +16,7 @@ public:
 	RenderController render_controller;
 	ScriptController script_controller;
 	DataStorage data_storage;
+	PhysicsController physics_controller;
 	static Singleton_R_C* getInstance();
 	static void deleteInstance();
 	static void runApplication();
