@@ -48,22 +48,27 @@ int main(){
 ## Functions
 ### void ge::runApplication(); 
 Opening main window
+
 ### bool makeSprite(GameObject* obj, std::string file_name);
 
 ### void createObject(std::string object_name);
 Creating an object of class GameObject named 'object_name'
+
 ### void deleteObject(std::string object_name);
 Deleting an object of class GameObject named 'object_name'
+
 ### GameObject* getObject(std::string object_name);
 Finding an object of class GameObject named 'object_name'
 
 	template <typename T>
 	void addComponent(std::string object_name);
+	
 	template <typename T>
 	void removeComponent(std::string object_name);
 	
 ### void setWindowTitle(std::string title);
 Setting window title 
+
 ### void setWindowSize(float x, float y);
 Setting window size using coordinates x and y
 
