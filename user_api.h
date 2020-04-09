@@ -5,7 +5,7 @@
 
 namespace ge{
 	void runApplication();
-	bool makeSprite(GameObject* obj, std::string file_name);
+	bool makeSprite(std::string object_name, std::string file_name);
 	void createObject(std::string object_name);
 	void deleteObject(std::string object_name);
 	GameObject* getObject(std::string object_name);
@@ -29,7 +29,7 @@ namespace ge{
 		}
 	};
 	template <typename T>
-	void makeModelOfCollider(ge::Vertex vert, GameObject* obj);
+	void makeModelOfCollider(ge::Vertex vert, std::string object_name);
 
 
 	
@@ -50,7 +50,8 @@ void ge::removeComponent(std::string object_name){
 }
 
 template <typename T>
-void ge::makeModelOfCollider(Vertex vert, GameObject* obj){
+void ge::makeModelOfCollider(Vertex vert, std::string object_name ){
+	GameObject* obj = ge::getObject(object_name);
 	if((std::is_base_of<Collider, T>::value) && (obj->getComponent<T>())){
 		sf::ConvexShape* convex = new sf::ConvexShape;
 		convex->setPointCount(vert.vertex.size());

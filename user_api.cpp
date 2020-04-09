@@ -4,7 +4,8 @@ void ge::runApplication(){
 	Singleton_R_C::runApplication();
 }
 
-bool ge::makeSprite(GameObject* obj, std::string file_name){
+bool ge::makeSprite(std::string object_name, std::string file_name){
+	GameObject* obj = ge::getObject(object_name);
 	if (obj->getComponent<Renderer>() != nullptr){
 		obj->getComponent<Renderer>()->makeSprite(file_name);
 		return true;
