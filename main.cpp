@@ -26,7 +26,7 @@ void MoveByKeys::execute(){
 
 class CustomCollider:public Collider{
 	void onCollision() override{
-		std::cout << "Collision!" << std::endl;
+		//std::cout << "Collision!" << std::endl;
 	}
 	~CustomCollider(){};
 };
@@ -39,8 +39,8 @@ int main(){
 	ge::setWindowTitle("Works!");
 	ge::setWindowSize(800, 600);
 	ge::addComponent<Renderer>("ball");
+	ge::addComponent<Renderer>("obj");
 	ge::addComponent<CustomCollider>("ball");
-	ge::addComponent<CustomCollider>("obj");
 	std::vector<int> vec;
 	vec.push_back(100);
 	vec.push_back(100);
@@ -52,11 +52,11 @@ int main(){
 	vec.push_back(200);
 	ge::Vertex vert = ge::Vertex(vec);
 	ge::makeModelOfCollider<CustomCollider>(vert, ge::getObject("ball"));
-	ge::makeModelOfCollider<CustomCollider>(vert, ge::getObject("obj"));
-	std::cout << "qwerty" << std::endl;
-
 	ge::addComponent<MoveByKeys>("ball");
+	ge::setLayer("obj", 2);
+	ge::setLayer("ball", 1);
 	ge::makeSprite(ge::getObject("ball"), "image_2.png");
+	ge::makeSprite(ge::getObject("obj"), "image_2.png");
 	ge::runApplication();
 	return 0;
 }

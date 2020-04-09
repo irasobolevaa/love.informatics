@@ -15,6 +15,7 @@ namespace ge{
 	void removeComponent(std::string object_name);
 	void setWindowTitle(std::string title);
 	void setWindowSize(float x, float y);
+	void setLayer(std::string object_name, int n);
 	class Vertex{
 	public:
 		std::vector<sf::Vector2f> vertex;
@@ -50,15 +51,17 @@ void ge::removeComponent(std::string object_name){
 
 template <typename T>
 void ge::makeModelOfCollider(Vertex vert, GameObject* obj){
-	sf::ConvexShape* convex = new sf::ConvexShape;
-	convex->setPointCount(vert.vertex.size());
-	int j = 0;
-	for (auto i = vert.vertex.begin(); i != vert.vertex.end(); i++){
-		convex->setPoint(j, *i);
-		j++;
+	if((std::is_base_of<Collider, T>::value) && (obj->getComponent<T>())){
+		sf::ConvexShape* convex = new sf::ConvexShape;
+		convex->setPointCount(vert.vertex.size());
+		int j = 0;
+		for (auto i = vert.vertex.begin(); i != vert.vertex.end(); i++){
+			convex->setPoint(j, *i);
+			j++;
+		}
+		if (std::is_base_of<Collider, T>::value)
+			obj->getComponent<T>()->makeModel(*convex);
 	}
-	if (std::is_base_of<Collider, T>::value)
-		obj->getComponent<T>()->makeModel(*convex);
 }
 
 

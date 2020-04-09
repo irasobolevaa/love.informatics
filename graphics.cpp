@@ -1,6 +1,7 @@
 #include "graphics.h"
 #include "game_object.h"
 
+
 void RenderController::drawAll(){
 	float x,y;
 	auto beg = this->rend_objects.begin();
@@ -12,7 +13,7 @@ void RenderController::drawAll(){
 		this->window.draw((*it)->getComponent<Renderer>()->getSprite());
 	}
 }
-	
+
 void RenderController::appendObject(GameObject* obj){
 	this->rend_objects.push_back(obj);
 }
@@ -59,3 +60,32 @@ void RenderController::setWindowSize(float x, float y){
 void RenderController::setTitle(std::string title){
 	this->title = title;
 }
+
+void Renderer::setLayer(int n){
+	this->layer = n;
+	Singleton_R_C::getInstance()->render_controller.sort();
+}
+
+void RenderController::setLayersCount(int N){
+	this->layers_count = N;
+}
+
+int RenderController::getLayersCount(){
+	return this->layers_count;
+}
+
+bool comp(GameObject* obj_1, GameObject* obj_2){
+	return obj_1->getComponent<Renderer>()->layer > obj_2->getComponent<Renderer>()->layer;
+}
+
+void RenderController::sort(){
+	auto beg = this->rend_objects.begin();
+	auto end = this->rend_objects.end();
+	std::sort(beg, end, comp);
+}
+
+
+
+
+
+

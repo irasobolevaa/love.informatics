@@ -32,7 +32,16 @@ void ge::setWindowTitle(std::string title){
 	Singleton_R_C::getInstance()->render_controller.setTitle(title);
 }
 
+void ge::setLayer(std::string object_name, int n){
+	GameObject* obj = ge::getObject(object_name);
+	if (n > Singleton_R_C::getInstance()->render_controller.getLayersCount())
+		Singleton_R_C::getInstance()->render_controller.setLayersCount(n);
+	if (obj->getComponent<Renderer>()){
+		obj->getComponent<Renderer>()->setLayer(n);
+	}
+}
 
+	
 
 
 
