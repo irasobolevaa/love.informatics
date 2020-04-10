@@ -33,7 +33,17 @@ private:
 	sf::Texture texture;
 	sf::Image image;
 	sf::Sprite sprite;
+	float frame = 0;
+	float speed = 0;
+	float w = 0;
+	float h = 0;
 public:
+	void makeAnimation(float x, float y, float w, float h, int count, float speed);
+	int count = 1;
+	int cord_x = 0;
+	float cord_y = 0;
+	bool animated = false;
+	void update();
 	int layer = 1;
 	void setLayer(int n);
 	void makeSprite(std::string file_name);

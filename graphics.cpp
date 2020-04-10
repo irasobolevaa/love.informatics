@@ -10,6 +10,8 @@ void RenderController::drawAll(){
 		x = this->size_x/2 + (*it)->x;
 		y = this->size_y/2 + (*it)->y;
 		(*it)->getComponent<Renderer>()->setPosOfSprite(sf::Vector2f(x, y));
+		if((*it)->getComponent<Renderer>()->animated)
+			(*it)->getComponent<Renderer>()->update();
 		this->window.draw((*it)->getComponent<Renderer>()->getSprite());
 	}
 }
@@ -39,9 +41,10 @@ void Renderer::makeSprite(std::string file_name){
 	}
 	this->texture.loadFromImage(image);
 	this->sprite.setTexture(this->texture);
-	sf::Vector2f origin (sprite.getTexture()->getSize().x * sprite.getScale().x, sprite.getTexture()->getSize().y * sprite.getScale().y);
+	sf::Vector2f origin (sprite.getTextureRect().width * sprite.getScale().x, sprite.getTextureRect().height * sprite.getScale().y);
 	origin *= 0.5f;
 	this->sprite.setOrigin(origin);
+
 }
 
 void Renderer::setPosOfSprite(sf::Vector2f vec){
@@ -83,6 +86,26 @@ void RenderController::sort(){
 	auto end = this->rend_objects.end();
 	std::sort(beg, end, comp);
 }
+
+void Renderer::update(){
+	this->frame += this->speed;
+	if(this->frame >= this->count)
+		this->frame -= this->count;
+	this->sprite.setTextureRect(sf::IntRect(this->cord_x + int(this->frame) * this->w, this->cord_y, this->w, this->h));
+}
+
+void Renderer::makeAnimation(float x, float y, float w, float h, int count, float speed){
+	this->cord_x = x;
+	this->cord_y = y;
+	this->w = w;
+	this->h = h;
+	this->count = count;
+	this->speed = speed;
+	this->sprite.setOrigin(sf::Vector2f(w/2, h/2));
+	this->animated = true;
+	this->sprite.setTextureRect(sf::IntRect(this->cord_x + this->w, this->cord_y, this->w, this->h));
+}
+	
 
 
 

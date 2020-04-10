@@ -6,6 +6,7 @@
 namespace ge{
 	void runApplication();
 	bool makeSprite(std::string object_name, std::string file_name);
+	void makeAnimation(std::string object_name, float x, float y, float w, float h, int count, float speed);
 	void createObject(std::string object_name);
 	void deleteObject(std::string object_name);
 	GameObject* getObject(std::string object_name);
@@ -39,7 +40,8 @@ template <typename T>
 void ge::addComponent(std::string object_name){
 	GameObject* obj;
 	obj = Singleton_R_C::getInstance()->data_storage.getObject(object_name);
-	obj->addComponent<T>();
+	if (obj)
+		obj->addComponent<T>();
 }
 
 template <typename T>

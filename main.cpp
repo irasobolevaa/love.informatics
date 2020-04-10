@@ -34,13 +34,12 @@ class CustomCollider:public Collider{
 
 
 int main(){
-	ge::createObject("ball");
-	ge::createObject("obj");
+	ge::createObject("rock");
 	ge::setWindowTitle("Works!");
 	ge::setWindowSize(800, 600);
-	ge::addComponent<Renderer>("ball");
-	ge::addComponent<Renderer>("obj");
-	ge::addComponent<CustomCollider>("ball");
+	ge::addComponent<Renderer>("rock");
+	ge::makeSprite("rock", "rock.png");
+	ge::makeAnimation("rock", 0, 0, 64, 64, 16, 0.005);
 	std::vector<int> vec;
 	vec.push_back(100);
 	vec.push_back(100);
@@ -51,12 +50,7 @@ int main(){
 	vec.push_back(100);
 	vec.push_back(200);
 	ge::Vertex vert = ge::Vertex(vec);
-	ge::makeModelOfCollider<CustomCollider>(vert, "ball");
-	ge::addComponent<MoveByKeys>("ball");
-	ge::setLayer("obj", 2);
-	ge::setLayer("ball", 1);
-	ge::makeSprite("ball", "image_2.png");
-	ge::makeSprite("obj", "image_2.png");
+	ge::addComponent<MoveByKeys>("rock");
 	ge::runApplication();
 	return 0;
 }
