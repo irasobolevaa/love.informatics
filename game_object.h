@@ -18,6 +18,9 @@ public:
 	T* getComponent();
 	float x = 0;
 	float y = 0;
+	bool is_deleted = false;
+	void remove();
+	void removeAllComponents();
 	~GameObject();
 private:
 	std::map<std::string, Component*> components;

@@ -54,7 +54,7 @@ void ge::removeComponent(std::string object_name){
 template <typename T>
 void ge::makeModelOfCollider(Vertex vert, std::string object_name ){
 	GameObject* obj = ge::getObject(object_name);
-	if((std::is_base_of<Collider, T>::value) && (obj->getComponent<T>())){
+	if(obj && (std::is_base_of<Collider, T>::value) && (obj->getComponent<T>())){
 		sf::ConvexShape* convex = new sf::ConvexShape;
 		convex->setPointCount(vert.vertex.size());
 		int j = 0;

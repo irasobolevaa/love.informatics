@@ -44,7 +44,8 @@ void ge::setLayer(std::string object_name, int n){
 
 void ge::makeAnimation(std::string object_name, float x, float y, float w, float h, int count, float speed){
 	GameObject* obj = ge::getObject(object_name);
-	obj->getComponent<Renderer>()->makeAnimation(x, y, w, h, count, speed);
+	if (obj)
+		obj->getComponent<Renderer>()->makeAnimation(x, y, w, h, count, speed);
 }
 
 	

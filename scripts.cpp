@@ -1,5 +1,6 @@
 #include "scripts.h"
 #include <algorithm>
+#include "game_object.h"
 
 void ScriptController::update(){
 	auto beg = this->scripts.begin();
@@ -17,6 +18,7 @@ void ScriptController::removeScript(Component* script){
 	auto beg = this->scripts.begin();
 	auto end = this->scripts.end();
 	auto it_rm_sc = find(beg, end, script);
-	this->scripts.erase(it_rm_sc);
+	if (it_rm_sc != end)
+		this->scripts.erase(it_rm_sc);
 }
 

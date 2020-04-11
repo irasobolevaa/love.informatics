@@ -19,8 +19,10 @@ void MoveByKeys::execute(){
 		this->obj->x +=0.3;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		this->obj->y -=0.3;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
 		this->obj->y +=0.3;
+		this->obj->remove();
+	}
 }
 
 
@@ -35,22 +37,23 @@ class CustomCollider:public Collider{
 
 int main(){
 	ge::createObject("rock");
+	ge::createObject("ball");
+	ge::createObject("rock_1");
 	ge::setWindowTitle("Works!");
 	ge::setWindowSize(800, 600);
 	ge::addComponent<Renderer>("rock");
+	ge::addComponent<Renderer>("ball");
 	ge::makeSprite("rock", "rock.png");
 	ge::makeAnimation("rock", 0, 0, 64, 64, 16, 0.005);
-	std::vector<int> vec;
-	vec.push_back(100);
-	vec.push_back(100);
-	vec.push_back(200);
-	vec.push_back(100);
-	vec.push_back(200);
-	vec.push_back(200);
-	vec.push_back(100);
-	vec.push_back(200);
-	ge::Vertex vert = ge::Vertex(vec);
+	ge::addComponent<Renderer>("rock_1");
+	ge::makeSprite("rock_1", "rock.png");
+	ge::makeAnimation("rock_1", 0, 0, 64, 64, 16, 0.005);
+	ge::makeAnimation("rock_1", 0, 0, 64, 64, 16, 0.01);
+	ge::makeSprite("ball", "image_2.png");
 	ge::addComponent<MoveByKeys>("rock");
+	ge::addComponent<MoveByKeys>("ball");
+	ge::setLayer("rock_1", 2);
+	ge::setLayer("ball", 3);
 	ge::runApplication();
 	return 0;
 }

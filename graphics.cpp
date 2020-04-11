@@ -13,6 +13,7 @@ void RenderController::drawAll(){
 		if((*it)->getComponent<Renderer>()->animated)
 			(*it)->getComponent<Renderer>()->update();
 		this->window.draw((*it)->getComponent<Renderer>()->getSprite());
+		
 	}
 }
 
@@ -24,7 +25,8 @@ void RenderController::removeObject(GameObject* obj){
 	auto beg = this->rend_objects.begin();
 	auto end = this->rend_objects.end();
 	auto it_rm_obj = find(beg, end, obj);
-	this->rend_objects.erase(it_rm_obj);
+	if (it_rm_obj != this->rend_objects.end())
+		this->rend_objects.erase(it_rm_obj);
 }
 
 void RenderController::makeWindow(){

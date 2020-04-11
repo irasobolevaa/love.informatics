@@ -29,6 +29,7 @@ void Singleton_R_C::runApplication(){
 		Singleton_R_C::getInstance()->script_controller.update();
 		Singleton_R_C::getInstance()->physics_controller.update();
         	Singleton_R_C::getInstance()->render_controller.window.display();
+        	Singleton_R_C::getInstance()->data_storage.update();
 	}
 	Singleton_R_C::deleteInstance();
 }

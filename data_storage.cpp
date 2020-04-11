@@ -39,6 +39,14 @@ GameObject* DataStorage::getObject(std::string object_name)
 	return nullptr;
 }
 
+void DataStorage::update(){
+	for (auto i = this->objects.begin(); i != this->objects.end(); i++){
+		if((*i)->is_deleted){
+			this->deleteObject((*i)->name);
+		}
+	}
+}
+
 DataStorage::~DataStorage(){
 	for (auto i = this->objects.begin(); i != this->objects.end(); i++){
 		delete *i;

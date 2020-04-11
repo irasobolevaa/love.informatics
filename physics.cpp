@@ -16,7 +16,7 @@ void PhysicsController::update(){
 	auto beg = this->colliders.begin();
         auto end = this->colliders.end();
         for (auto it = beg; it != end; it++){
-                for (auto jt = it; jt != end; jt++){
+               	for (auto jt = it; jt != end; jt++){
 			if((it != jt) && (static_cast<Collider*>((*it)))->isCollided(static_cast<Collider*>(*jt))){
 				static_cast<Collider*>(*it)->onCollision();
 			}
@@ -32,7 +32,8 @@ void PhysicsController::removeCollider(Component* col){
 	auto beg = this->colliders.begin();
 	auto end = this->colliders.end();
 	auto it_rm_col = find(beg, end, col);
-	this->colliders.erase(it_rm_col);
+	if(it_rm_col != end)
+		this->colliders.erase(it_rm_col);
 }
 
 bool Collider::isCollided(Collider* sample){
