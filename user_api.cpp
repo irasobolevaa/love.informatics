@@ -18,7 +18,9 @@ void ge::createObject(std::string object_name){
 }
 
 void ge::deleteObject(std::string object_name){
-	Singleton_R_C::getInstance()->data_storage.deleteObject(object_name);
+	GameObject* obj = Singleton_R_C::getInstance()->data_storage.getObject(object_name);
+	if (obj)
+		obj->remove();
 }
 
 GameObject* ge::getObject(std::string object_name){

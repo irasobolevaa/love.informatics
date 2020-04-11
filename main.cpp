@@ -21,7 +21,7 @@ void MoveByKeys::execute(){
 		this->obj->y -=0.3;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
 		this->obj->y +=0.3;
-		this->obj->remove();
+		ge::deleteObject(this->obj->name);
 	}
 }
 
