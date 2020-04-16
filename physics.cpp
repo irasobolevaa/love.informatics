@@ -146,7 +146,8 @@ void Collider::elasticCollision(Collider* source, Collider* obj2){
           				norm[1] = -norm[1];
         			}
         			if ((((norm[0])*(-vert2.getPoint(j).x)+(norm[1])*(-vert2.getPoint(j).y))*((norm[0])*(V[0])+(norm[1])*(V[1]))) > 0) 
-          				solveElasticCollision(norm, source, obj2);
+          				solveElasticCollision(norm, source, obj2); //не проходит этот if
+				
       			}
 		}
 	}	
@@ -238,4 +239,8 @@ sf::ConvexShape Collider::getModel(){
 
 void Collider::setName(std::string name){
 	this->name = name;
+}
+
+void Collider::setMov(bool flag){
+	this->moveable = flag;
 }

@@ -23,17 +23,16 @@ namespace ge{
 	class Vertex{
 	public:
 		std::vector<sf::Vector2f> vertex;
-		Vertex(std::vector<int> coordinates){
-			for (auto i = coordinates.begin(); i != coordinates.end(); i++){
-				auto j = i;
-				j++;
-				this->vertex.push_back(sf::Vector2f(*i, *j));
-				i++;
+		Vertex(std::vector<std::pair<float, float>> coordinates){
+			for (auto i: coordinates){
+				this->vertex.push_back(sf::Vector2f(i.first, i.second));
 			}
 		}
 	};
 	template <typename T>
 	void makeModelOfCollider(ge::Vertex vert, std::string object_name);
+	template <typename T>
+	void setMoveable(std::string object_name, bool flag);
 
 
 	
@@ -70,6 +69,12 @@ void ge::makeModelOfCollider(Vertex vert, std::string object_name ){
 	}
 }
 
+template <typename T>
+void ge::setMoveable(std::string object_name, bool flag){
+	GameObject* obj = ge::getObject(object_name);
+	if(obj && (std::is_base_of<Collider, T>::value) && (obj->getComponent<T>()))
+		obj->getComponent<T>()->moveable = flag;
+}	
 
 
 

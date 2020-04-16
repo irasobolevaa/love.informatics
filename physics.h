@@ -22,6 +22,7 @@ public:
 	void elasticCollision(Collider* source, Collider* obj2);
 	void inelasticCollision(Collider* source, Collider* obj2);
 	void solveCollision(Collider* obj2);
+	void setMov(bool flag);
 };
 
 
