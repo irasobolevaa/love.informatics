@@ -18,6 +18,8 @@ public:
 	T* getComponent();
 	float x = 0;
 	float y = 0;
+	std::vector<float> velocity = {0,0};
+	std::vector<float> accel = {0,0};
 	bool is_deleted = false;
 	void remove();
 	void removeAllComponents();

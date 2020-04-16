@@ -50,7 +50,26 @@ void ge::makeAnimation(std::string object_name, float x, float y, float w, float
 		obj->getComponent<Renderer>()->makeAnimation(x, y, w, h, count, speed);
 }
 
-	
+void ge::setVelocity(std::string object_name, float vel_x, float vel_y){
+	GameObject* obj = ge::getObject(object_name);
+	if (obj)
+		obj->velocity[0] = vel_x;
+		obj->velocity[1] = vel_y;
+}
+
+void ge::setAcceleration(std::string object_name, float acc_x, float acc_y){
+        GameObject* obj = ge::getObject(object_name);
+        if (obj)
+                obj->velocity[0] = acc_x;
+                obj->velocity[1] = acc_y;
+}
+
+void ge::setMass (std::string object_name, float weight){
+	GameObject* obj = ge::getObject(object_name);
+        if (obj and obj->getComponent<Collider>())
+                obj->getComponent<Collider>()->mass = weight;
+}
+
 
 
 

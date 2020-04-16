@@ -15,7 +15,13 @@ public:
 	void setName(std::string name);
 	sf::ConvexShape getModel();
 	bool isCollided(Collider* sample);
+	bool moveable = true;
+	bool elastic = true;
+	float mass = 10;
 	virtual void onCollision() = 0;
+	void elasticCollision(Collider* source, Collider* obj2);
+	void inelasticCollision(Collider* source, Collider* obj2);
+	void solveCollision(Collider* obj2);
 };
 
 

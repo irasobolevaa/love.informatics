@@ -25,6 +25,13 @@ void MoveByKeys::execute(){
 	}
 }
 
+/*class WallBorders:public Script{
+	void execute() override;
+}
+
+void WallBorders::execute(){
+	if (this->obj->x >)
+	{ int i+=1 } */;
 
 class CustomCollider:public Collider{
 	void onCollision() override{
@@ -32,7 +39,6 @@ class CustomCollider:public Collider{
 	}
 	~CustomCollider(){};
 };
-
 
 
 int main(){
@@ -43,6 +49,8 @@ int main(){
 	ge::setWindowSize(800, 600);
 	ge::addComponent<Renderer>("rock");
 	ge::addComponent<Renderer>("ball");
+	ge::addComponent<CustomCollider>("ball");
+	ge::setVelocity("ball",1,1);
 	ge::makeSprite("rock", "rock.png");
 	ge::makeAnimation("rock", 0, 0, 64, 64, 16, 0.005);
 	ge::addComponent<Renderer>("rock_1");

@@ -7,6 +7,9 @@ namespace ge{
 	void runApplication();
 	bool makeSprite(std::string object_name, std::string file_name);
 	void makeAnimation(std::string object_name, float x, float y, float w, float h, int count, float speed);
+	void setVelocity(std::string object_name, float vel_x, float vel_y);
+	void setAcceleration(std::string object_name, float acc_x, float acc_y);
+	void setMass(std::string object_name, float weight);
 	void createObject(std::string object_name);
 	void deleteObject(std::string object_name);
 	GameObject* getObject(std::string object_name);
