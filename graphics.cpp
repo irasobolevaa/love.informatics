@@ -8,7 +8,7 @@ void RenderController::drawAll(){
 	auto end = this->rend_objects.end();
 	for (auto it = beg; it != end; it++){
 		x = this->size_x/2 + (*it)->x;
-		y = this->size_y/2 + (*it)->y;
+		y = this->size_y/2 - (*it)->y;
 		(*it)->getComponent<Renderer>()->setPosOfSprite(sf::Vector2f(x, y));
 		if((*it)->getComponent<Renderer>()->animated)
 			(*it)->getComponent<Renderer>()->update();

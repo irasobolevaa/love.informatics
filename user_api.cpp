@@ -70,6 +70,13 @@ void ge::setMass (std::string object_name, float weight){
                 obj->getComponent<Collider>()->mass = weight;
 }
 
+void ge::setCoordinates(std::string object_name, std::pair<float, float> coordinates){
+	GameObject* obj = ge::getObject(object_name);
+	if (obj){
+		obj->x = coordinates.first;
+		obj->y = coordinates.second;
+	}
+}
 
 
 

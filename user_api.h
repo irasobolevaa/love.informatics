@@ -33,6 +33,10 @@ namespace ge{
 	void makeModelOfCollider(ge::Vertex vert, std::string object_name);
 	template <typename T>
 	void setMoveable(std::string object_name, bool flag);
+	template <typename T>
+	void setVisible(std::string object_name, bool flag);
+	void setCoordinates(std::string object_name, std::pair<float, float>);
+
 
 
 	
@@ -74,6 +78,13 @@ void ge::setMoveable(std::string object_name, bool flag){
 	GameObject* obj = ge::getObject(object_name);
 	if(obj && (std::is_base_of<Collider, T>::value) && (obj->getComponent<T>()))
 		obj->getComponent<T>()->moveable = flag;
+}	
+
+template <typename T>
+void ge::setVisible(std::string object_name, bool flag){
+	GameObject* obj = ge::getObject(object_name);
+	if(obj && (std::is_base_of<Collider, T>::value) && (obj->getComponent<T>()))
+		obj->getComponent<T>()->visible = flag;
 }	
 
 

@@ -40,15 +40,15 @@ void PhysicsController::update(){
         auto end = this->colliders.end();
         for (auto it = beg; it != end; it++){
                	for (auto jt = it; jt != end; jt++){
-			if((it != jt) && (static_cast<Collider*>((*it)))->isCollided(static_cast<Collider*>(*jt))){
+			if(it != jt && (static_cast<Collider*>((*it)))->isCollided(static_cast<Collider*>(*jt))){
 				static_cast<Collider*>(*it)->solveCollision(static_cast<Collider*>(*jt));
 				static_cast<Collider*>(*it)->onCollision();
 			}
         	}
-		static_cast<Collider*>(*it)->obj->velocity[0] += static_cast<Collider*>(*it)->obj->accel[0];
-		static_cast<Collider*>(*it)->obj->velocity[1] += static_cast<Collider*>(*it)->obj->accel[1];
-		static_cast<Collider*>(*it)->obj->x += static_cast<Collider*>(*it)->obj->velocity[0];
-		static_cast<Collider*>(*it)->obj->y += static_cast<Collider*>(*it)->obj->velocity[1];
+		static_cast<Collider*>(*it)->obj->velocity[0] -= static_cast<Collider*>(*it)->obj->accel[0];//В этих 4 строчках были +=
+		static_cast<Collider*>(*it)->obj->velocity[1] -= static_cast<Collider*>(*it)->obj->accel[1];
+		static_cast<Collider*>(*it)->obj->x -= static_cast<Collider*>(*it)->obj->velocity[0];
+		static_cast<Collider*>(*it)->obj->y -= static_cast<Collider*>(*it)->obj->velocity[1];
 	}
 }
 
@@ -86,7 +86,6 @@ void solveElasticCollision(std::vector<float> norm, Collider* source, Collider* 
 	float module = sqrt(pow(norm[0], 2) + pow(norm[1], 2));
   	norm[0] = norm[0]/module;
   	norm[1] = norm[1]/module;
-
   	std::vector<float> tau = {-norm[1], norm[0]};
 
   	float v1n = source->obj->velocity[0] * norm[0] + source->obj->velocity[1] * norm[1];
@@ -146,7 +145,7 @@ void Collider::elasticCollision(Collider* source, Collider* obj2){
           				norm[1] = -norm[1];
         			}
         			if ((((norm[0])*(-vert2.getPoint(j).x)+(norm[1])*(-vert2.getPoint(j).y))*((norm[0])*(V[0])+(norm[1])*(V[1]))) > 0) 
-          				solveElasticCollision(norm, source, obj2); //не проходит этот if
+          				solveElasticCollision(norm, source, obj2); 
 				
       			}
 		}
@@ -243,4 +242,8 @@ void Collider::setName(std::string name){
 
 void Collider::setMov(bool flag){
 	this->moveable = flag;
+}
+
+void Collider::setVisible(bool flag){
+	this->visible = flag;
 }

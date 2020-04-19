@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <type_traits>
 #include "user_api.h"
+#include <cmath>
 
 
 
@@ -14,13 +15,13 @@ class MoveByKeys:public Script{ void execute() override;
 
 void MoveByKeys::execute(){
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		this->obj->x -=0.3;
+		this->obj->x -=30;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		this->obj->x +=0.3;
+		this->obj->x +=30;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		this->obj->y -=0.3;
+		this->obj->y +=30;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-		this->obj->y +=0.3;
+		this->obj->y -=30;
 		ge::deleteObject(this->obj->name);
 	}
 }
@@ -37,22 +38,36 @@ int main(){
 	ge::setWindowTitle("Works!");
 	ge::setWindowSize(800, 600);
 
-	ge::createObject("rock");
-	ge::addComponent<Renderer>("rock");
-	ge::makeSprite("rock", "rock.png");
-	ge::makeAnimation("rock", 0, 0, 64, 64, 16, 0.005);
-	ge::addComponent<CustomCollider>("rock");
-
 	std::vector<std::pair<float, float>> vec;
-	vec.push_back({-32, 32});
-	vec.push_back({32, 32});
-	vec.push_back({32, -32});
-	vec.push_back({-32,-32});
+	float x, y, vx, vy;
+	for(int j = 0; j < 10; j++){
+		ge::createObject("rock" + std::to_string(j));
+		ge::addComponent<Renderer>("rock" + std::to_string(j));
+		ge::makeSprite("rock" + std::to_string(j), "rock.png");
+		ge::makeAnimation("rock" + std::to_string(j), 0, 0, 64, 64, 16, 1);
+		ge::addComponent<CustomCollider>("rock" + std::to_string(j));
 
-	ge::Vertex v = ge::Vertex(vec);
+		for (int i = 0; i < 4; i++){
+			x = 40*cos(2*3.14/i);
+			y = 40*sin(2*3.14/i);
+			vec.push_back({x, y,});
+		}
+	
 
-	ge::makeModelOfCollider<CustomCollider>(v, "rock");
-	ge::setVelocity("rock", 0.05, 0.1);
+
+		ge::Vertex v = ge::Vertex(vec);
+		ge::makeModelOfCollider<CustomCollider>(v, "rock" + std::to_string(j));
+
+		x = -300;
+		y = 0;
+		ge::setCoordinates("rock" + std::to_string(j),{x + j*70, y});
+
+		vx = rand() % 12500;
+	      	vx /= 1000;
+		vy = rand() % 12500;
+		vy /= 1000;	
+		ge::setVelocity("rock" + std::to_string(j), vx, vy);
+	}
 
 	ge::createObject("wall_1");
 	ge::createObject("wall_2");
@@ -71,10 +86,10 @@ int main(){
 	vec2.push_back({-410, -299});
 	vec2.push_back({-399, -299});
 
-	vec3.push_back({-400, -300});
-	vec3.push_back({-400, -310});
-	vec3.push_back({400, -310});
-	vec3.push_back({400, -300});
+	vec3.push_back({-400, -280});
+	vec3.push_back({-400, -290});
+	vec3.push_back({400, -290});
+	vec3.push_back({400, -280});
 
 	vec4.push_back({400, -299});
 	vec4.push_back({410, -299});
