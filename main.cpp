@@ -44,7 +44,7 @@ int main(){
 		ge::createObject("rock" + std::to_string(j));
 		ge::addComponent<Renderer>("rock" + std::to_string(j));
 		ge::makeSprite("rock" + std::to_string(j), "rock.png");
-		ge::makeAnimation("rock" + std::to_string(j), 0, 0, 64, 64, 16, 0.2);
+		ge::makeAnimation("rock" + std::to_string(j), 0, 0, 64, 64, 16, 0.05);
 		ge::addComponent<CustomCollider>("rock" + std::to_string(j));
 
 		for (int i = 0; i < 5; i++){
@@ -62,9 +62,9 @@ int main(){
 		y = 0;
 		ge::setCoordinates("rock" + std::to_string(j),{x + j*70, y});
 
-		vx = rand() % 12500;
+		vx = rand() % 5500;
 	      	vx /= 10000;
-		vy = rand() % 12500;
+		vy = rand() % 5500;
 		vy /= 10000;	
 		ge::setVelocity("rock" + std::to_string(j), vx, vy);
 	}

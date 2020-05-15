@@ -22,3 +22,8 @@ void GameObject::removeAllComponents(){
 	}
 	std::cout << "from removeAllComponents" << std::endl;
 }
+
+vector2f::vector2f(float x, float y){
+	this->x = x;
+	this->y = y;
+}

@@ -53,15 +53,15 @@ void ge::makeAnimation(std::string object_name, float x, float y, float w, float
 void ge::setVelocity(std::string object_name, float vel_x, float vel_y){
 	GameObject* obj = ge::getObject(object_name);
 	if (obj)
-		obj->velocity.first = vel_x;
-		obj->velocity.second = vel_y;
+		obj->velocity.x  = vel_x;
+		obj->velocity.y = vel_y;
 }
 
 void ge::setAcceleration(std::string object_name, float acc_x, float acc_y){
         GameObject* obj = ge::getObject(object_name);
         if (obj)
-                obj->velocity.first = acc_x;
-                obj->velocity.second = acc_y;
+                obj->velocity.x  = acc_x;
+                obj->velocity.y = acc_y;
 }
 
 void ge::setMass (std::string object_name, float weight){
@@ -70,11 +70,11 @@ void ge::setMass (std::string object_name, float weight){
                 obj->getComponent<Collider>()->mass = weight;
 }
 
-void ge::setCoordinates(std::string object_name, std::pair<float, float> coordinates){
+void ge::setCoordinates(std::string object_name, vector2f coordinates){
 	GameObject* obj = ge::getObject(object_name);
 	if (obj){
-		obj->x = coordinates.first;
-		obj->y = coordinates.second;
+		obj->x = coordinates.x ;
+		obj->y = coordinates.y;
 	}
 }
 

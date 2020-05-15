@@ -6,6 +6,12 @@
 #include "singleton.h"
 #include <type_traits>
 
+class vector2f{
+public:
+	float x;
+	float y;
+	vector2f(float x, float y);
+};
 
 class GameObject{
 public:
@@ -18,8 +24,8 @@ public:
 	T* getComponent();
 	float x = 0;
 	float y = 0;
-	std::vector<float> velocity = {0,0};
-	std::vector<float> accel = {0,0};
+	vector2f velocity = vector2f(0, 0);
+	vector2f accel = vector2f(0, 0);
 	bool is_deleted = false;
 	void remove();
 	void removeAllComponents();
@@ -27,7 +33,6 @@ public:
 private:
 	std::map<std::string, Component*> components;
 };
-
 
 template<typename T>
 void GameObject:: addComponent(){

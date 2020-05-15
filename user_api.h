@@ -35,7 +35,7 @@ namespace ge{
 	void setMoveable(std::string object_name, bool flag);
 	template <typename T>
 	void setVisible(std::string object_name, bool flag);
-	void setCoordinates(std::string object_name, std::pair<float, float>);
+	void setCoordinates(std::string object_name, vector2f);
 
 
 

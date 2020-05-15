@@ -17,19 +17,19 @@
 
 }*/
 
-bool segmentCollision2(std::pair<float, float> v11, std::pair<float,float> v12, std::pair<float, float> v21, std::pair<float, float> v22, std::pair<float, float> c1, std::pair<float, float> c2)
+bool segmentCollision2(vector2f v11, vector2f v12, vector2f v21, vector2f v22, vector2f c1, vector2f c2)
 {
-  v11.first+= c1.first;
-  v11.second += c1.second;
-  v12.first += c1.first;
-  v12.second += c1.second;
-  v21.first += c2.first;
-  v21.second += c2.second;
-  v22.first += c2.first;
-  v22.second += c2.second;
+  v11.x += c1.x;
+  v11.y += c1.y;
+  v12.x += c1.x;
+  v12.y += c1.y;
+  v21.x += c2.x;
+  v21.y += c2.y;
+  v22.x += c2.x;
+  v22.y += c2.y;
 
-  bool flag1 = ((((v12.first-v11.first)*(v21.second-v11.second)-(v21.first-v11.first)*(v12.second-v11.second))*((v12.first-v11.first)*(v22.second-v11.second)-(v12.second-v11.second)*(v22.first-v11.first))) <= 0);
-  bool flag2 = ((((v21.first-v22.first)*(v11.second-v22.second)-(v21.second-v22.second)*(v11.first-v22.first))*((v21.first-v22.first)*(v12.second-v22.second)-(v21.second-v22.second)*(v12.first-v22.first))) <= 0);
+  bool flag1 = ((((v12.x-v11.x)*(v21.y-v11.y)-(v21.x-v11.x)*(v12.y-v11.y))*((v12.x-v11.x)*(v22.y-v11.y)-(v12.y-v11.y)*(v22.x-v11.x))) <= 0);
+  bool flag2 = ((((v21.x-v22.x)*(v11.y-v22.y)-(v21.y-v22.y)*(v11.x-v22.x))*((v21.x-v22.x)*(v12.y-v22.y)-(v21.y-v22.y)*(v12.x-v22.x))) <= 0);
   if (flag1 and flag2)
     return true;
   return false;
@@ -45,53 +45,53 @@ void PhysicsController::update(){
 				static_cast<Collider*>(*it)->onCollision();
 			}
         	}
-		static_cast<Collider*>(*it)->obj->velocity.first -= static_cast<Collider*>(*it)->obj->accel.first;//В этих 4 строчках были +=
-		static_cast<Collider*>(*it)->obj->velocity.second -= static_cast<Collider*>(*it)->obj->accel.second;
-		static_cast<Collider*>(*it)->obj->x -= static_cast<Collider*>(*it)->obj->velocity.first;
-		static_cast<Collider*>(*it)->obj->y -= static_cast<Collider*>(*it)->obj->velocity.second;
+		static_cast<Collider*>(*it)->obj->velocity.x -= static_cast<Collider*>(*it)->obj->accel.x;//В этих 4 строчках были +=
+		static_cast<Collider*>(*it)->obj->velocity.y -= static_cast<Collider*>(*it)->obj->accel.y;
+		static_cast<Collider*>(*it)->obj->x -= static_cast<Collider*>(*it)->obj->velocity.x;
+		static_cast<Collider*>(*it)->obj->y -= static_cast<Collider*>(*it)->obj->velocity.y;
 	}
 }
 
-void solveInelasticCollision(std::pair<float, float> norm, Collider* source, Collider* obj2){
-	float module = sqrt(pow(norm.first, 2) + pow(norm.second, 2));
-  	norm.first = norm.first/module;
-  	norm.second = norm.second/module;
-  	std::pair<float, float> tau = {-norm.second, norm.first};
+void solveInelasticCollision(vector2f norm, Collider* source, Collider* obj2){
+	float module = sqrt(pow(norm.x, 2) + pow(norm.y, 2));
+  	norm.x = norm.x/module;
+  	norm.y = norm.y/module;
+  	vector2f tau = {-norm.y, norm.x};
 
-  	float v1n = source->obj->velocity.first * norm.first + source->obj->velocity.second * norm.second;
-  	float v2n = obj2->obj->velocity.first * norm.first + obj2->obj->velocity.second * norm.second;
-  	float v1t = source->obj->velocity.first * tau.first + source->obj->velocity.second * tau.second;
-  	float v2t = obj2->obj->velocity.first * tau.first + obj2->obj->velocity.second * tau.second;
+  	float v1n = source->obj->velocity.x * norm.x + source->obj->velocity.y * norm.y;
+  	float v2n = obj2->obj->velocity.x * norm.x + obj2->obj->velocity.y * norm.y;
+  	float v1t = source->obj->velocity.x * tau.x + source->obj->velocity.y * tau.y;
+  	float v2t = obj2->obj->velocity.x * tau.x + obj2->obj->velocity.y * tau.y;
   	float vn = (source->mass * v1n + obj2->mass * v2n)/(source->mass + obj2->mass);
   	if ((obj2->moveable == false) and (source->moveable == true)){
-    		source->obj->velocity.first = (v2n) *norm.first + v1t*tau.first;
-    		source->obj->velocity.second = (v2n) *norm.second + v1t*tau.second;
+    		source->obj->velocity.x = (v2n) *norm.x + v1t*tau.x;
+    		source->obj->velocity.y = (v2n) *norm.y + v1t*tau.y;
   	}	
 
   	if ((obj2->moveable == true) and (source->moveable == false)){
-		obj2->obj->velocity.first = (v1n) *norm.first + v2t*tau.first;
-    		obj2->obj->velocity.second = (v1n) *norm.second + v2t*tau.second;
+		obj2->obj->velocity.x = (v1n) *norm.x + v2t*tau.x;
+    		obj2->obj->velocity.y = (v1n) *norm.y + v2t*tau.y;
   	}	
 
   	if ((obj2->moveable == true) and (source->moveable == true))
   	{
-   		source->obj->velocity.first = vn * norm.first + v1t*tau.first;
-    		source->obj->velocity.second = vn * norm.second + v1t*tau.first;
-    		obj2->obj->velocity.first = vn * norm.first + v2t*tau.first;
-    		obj2->obj->velocity.second = vn * norm.second + v2t*tau.first;
+   		source->obj->velocity.x = vn * norm.x + v1t*tau.x;
+    		source->obj->velocity.y = vn * norm.y + v1t*tau.y;
+    		obj2->obj->velocity.x = vn * norm.x + v2t*tau.x;
+    		obj2->obj->velocity.y = vn * norm.y + v2t*tau.x;
   	}
 }
 
-void solveElasticCollision(std::pair<float, float> norm, Collider* source, Collider* obj2){
-	float module = sqrt(pow(norm.first, 2) + pow(norm.second, 2));
-  	norm.first = norm.first/module;
-  	norm.second = norm.second/module;
-  	std::pair<float, float> tau = {-norm.second, norm.first};
+void solveElasticCollision(vector2f norm, Collider* source, Collider* obj2){
+	float module = sqrt(pow(norm.x, 2) + pow(norm.y, 2));
+  	norm.x = norm.x/module;
+  	norm.y = norm.y/module;
+  	vector2f tau = {-norm.y, norm.x};
 
-  	float v1n = source->obj->velocity.first * norm.first + source->obj->velocity.second * norm.second;
-  	float v2n = obj2->obj->velocity.first * norm.first + obj2->obj->velocity.second * norm.second;
-  	float v1t = source->obj->velocity.first * tau.first + source->obj->velocity.second * tau.second;
-  	float v2t = obj2->obj->velocity.first * tau.first + obj2->obj->velocity.second * tau.second;
+  	float v1n = source->obj->velocity.x * norm.x + source->obj->velocity.y * norm.y;
+  	float v2n = obj2->obj->velocity.x * norm.x + obj2->obj->velocity.y * norm.y;
+  	float v1t = source->obj->velocity.x * tau.x + source->obj->velocity.y * tau.y;
+  	float v2t = obj2->obj->velocity.x * tau.x + obj2->obj->velocity.y * tau.y;
 
   	float k = source->mass / obj2->mass;
   	if (obj2->moveable == false)
@@ -108,16 +108,16 @@ void solveElasticCollision(std::pair<float, float> norm, Collider* source, Colli
 	       	}
     		float v1n_ = (-b + sqrt(pow(b, 2) - 4*a*c))/(2*a);
     		float v2n_ = k*(v1n - v1n_) + v2n;
-    		source->obj->velocity.first = v1n_*norm.first + v1t*tau.first;
-    		source->obj->velocity.second = v1n_*norm.second + v1t*tau.second;
+    		source->obj->velocity.x = v1n_*norm.x + v1t*tau.x;
+    		source->obj->velocity.y = v1n_*norm.y + v1t*tau.y;
 
-    		obj2->obj->velocity.first = v2n_*norm.first + v2t*tau.first;
-    		obj2->obj->velocity.second = v2n_*norm.second + v2t*tau.second;
+    		obj2->obj->velocity.x = v2n_*norm.x + v2t*tau.x;
+    		obj2->obj->velocity.y = v2n_*norm.y + v2t*tau.y;
   	}
 
   	if (source->moveable == false){
-    		obj2->obj->velocity.first = 2*(v1n) *norm.first + v2t*tau.first;
-    		obj2->obj->velocity.second = 2*(v1n) *norm.second + v2t*tau.second;
+    		obj2->obj->velocity.x = 2*(v1n) *norm.x + v2t*tau.x;
+    		obj2->obj->velocity.y = 2*(v1n) *norm.y + v2t*tau.y;
   	}
 }
 
@@ -125,26 +125,26 @@ void solveElasticCollision(std::pair<float, float> norm, Collider* source, Colli
 void Collider::elasticCollision(Collider* source, Collider* obj2){
 	if ((obj2->moveable == false) and (source->moveable == false))
     		return;
-  	std::pair<float, float> V = {this->obj->velocity.first - obj2->obj->velocity.first, this->obj->velocity.second - obj2->obj->velocity.second};
+  	vector2f V = {this->obj->velocity.x - obj2->obj->velocity.x, this->obj->velocity.y - obj2->obj->velocity.y};
 	sf::ConvexShape vert1 = this->getModel();
 	sf::ConvexShape vert2 = obj2->getModel();
-  	std::pair<float, float> c1 = {this->obj->x, this->obj->y};
-  	std::pair<float, float> c2 = {obj2->obj->x, obj2->obj->y};
+  	vector2f c1 = {this->obj->x, this->obj->y};
+  	vector2f c2 = {obj2->obj->x, obj2->obj->y};
   
   	for (int i = 0; i < vert1.getPointCount() - 1; i++){
     		for (int j = 0; j < vert2.getPointCount() - 1; j++){
-			std::pair<float, float> point_1i = {vert1.getPoint(i).x, vert1.getPoint(i).y};
-			std::pair<float, float> point_1iplus = {vert1.getPoint(i+1).x, vert1.getPoint(i+1).y};
-			std::pair<float, float> point_2j = {vert2.getPoint(j).x, vert2.getPoint(j).y};
-			std::pair<float, float> point_2jplus = {vert2.getPoint(j+1).x, vert2.getPoint(j+1).y};
+			vector2f point_1i = {vert1.getPoint(i).x, vert1.getPoint(i).y};
+			vector2f point_1iplus = {vert1.getPoint(i+1).x, vert1.getPoint(i+1).y};
+			vector2f point_2j = {vert2.getPoint(j).x, vert2.getPoint(j).y};
+			vector2f point_2jplus = {vert2.getPoint(j+1).x, vert2.getPoint(j+1).y};
       			if (segmentCollision2(point_1i, point_1iplus, point_2j, point_2jplus, c1, c2))
       			{		
-        			std::pair<float, float> norm = {-vert2.getPoint(j+1).y + vert2.getPoint(j).y, vert2.getPoint(j+1).x - vert2.getPoint(j).x};
-        			if (((norm.first)*(-vert2.getPoint(j).x)+(norm.second)*(-vert2.getPoint(j).y)) > 0){	
-          				norm.first = -norm.first;
-          				norm.second = -norm.second;
+        			vector2f norm = {-vert2.getPoint(j+1).y + vert2.getPoint(j).y, vert2.getPoint(j+1).x - vert2.getPoint(j).x};
+        			if (((norm.x)*(-vert2.getPoint(j).x)+(norm.y)*(-vert2.getPoint(j).y)) > 0){	
+          				norm.x = -norm.x;
+          				norm.y = -norm.y;
         			}
-        			if ((((norm.first)*(-vert2.getPoint(j).x)+(norm.second)*(-vert2.getPoint(j).y))*((norm.first)*(V.first)+(norm.second)*(V.second))) > 0) 
+        			if ((((norm.x)*(-vert2.getPoint(j).x)+(norm.y)*(-vert2.getPoint(j).y))*((norm.x)*(V.x)+(norm.y)*(V.y))) > 0) 
           				solveElasticCollision(norm, source, obj2); 
 				
       			}
@@ -156,26 +156,26 @@ void Collider::inelasticCollision(Collider* source, Collider* obj2){
 
 	if ((obj2->moveable == false) and (source->moveable == false))
     		return;
-  	std::pair<float, float> V = {this->obj->velocity.first - obj2->obj->velocity.first, this->obj->velocity.second - obj2->obj->velocity.second};
+  	vector2f V = {this->obj->velocity.x - obj2->obj->velocity.x, this->obj->velocity.y - obj2->obj->velocity.y};
 
 	sf::ConvexShape vert1 = this->getModel();
 	sf::ConvexShape vert2 = obj2->getModel();
-  	std::pair<float, float> c1 = {this->obj->x, this->obj->y};
-  	std::pair<float, float> c2 = {obj2->obj->x, obj2->obj->y};
+  	vector2f c1 = {this->obj->x, this->obj->y};
+  	vector2f c2 = {obj2->obj->x, obj2->obj->y};
 
 	for (int i = 0; i < vert1.getPointCount() - 1; i++){
     		for (int j = 0; j < vert2.getPointCount() - 1; j++){
-      			std::pair<float, float> point_1i = {vert1.getPoint(i).x, vert1.getPoint(i).y};
-                        std::pair<float, float> point_1iplus = {vert1.getPoint(i+1).x, vert1.getPoint(i+1).y};
-                        std::pair<float, float> point_2j = {vert2.getPoint(j).x, vert2.getPoint(j).y};
-                        std::pair<float, float> point_2jplus = {vert2.getPoint(j+1).x, vert2.getPoint(j+1).y};
+      			vector2f point_1i = {vert1.getPoint(i).x, vert1.getPoint(i).y};
+                        vector2f point_1iplus = {vert1.getPoint(i+1).x, vert1.getPoint(i+1).y};
+                        vector2f point_2j = {vert2.getPoint(j).x, vert2.getPoint(j).y};
+                        vector2f point_2jplus = {vert2.getPoint(j+1).x, vert2.getPoint(j+1).y};
                         if (segmentCollision2(point_1i, point_1iplus, point_2j, point_2jplus, c1, c2)){
-        			std::pair<float, float> norm = {-vert2.getPoint(j+1).y + vert2.getPoint(j).y, vert2.getPoint(j+1).x - vert2.getPoint(j).x};
-        			if (((norm.first)*(-vert2.getPoint(j).x)+(norm.second)*(-vert2.getPoint(j).y)) > 0){
-          				norm.first = -norm.first;
-         				norm.second = -norm.second;
+        			vector2f norm = {-vert2.getPoint(j+1).y + vert2.getPoint(j).y, vert2.getPoint(j+1).x - vert2.getPoint(j).x};
+        			if (((norm.x)*(-vert2.getPoint(j).x)+(norm.y)*(-vert2.getPoint(j).y)) > 0){
+          				norm.x = -norm.x;
+         				norm.y = -norm.y;
         			}
-        			if ((((norm.first)*(-vert2.getPoint(j).x)+(norm.first)*(-vert2.getPoint(j).y))*((norm.first)*(V.first)+(norm.second)*(V.second))) > 0)
+        			if ((((norm.x)*(-vert2.getPoint(j).x)+(norm.x)*(-vert2.getPoint(j).y))*((norm.x)*(V.x)+(norm.y)*(V.y))) > 0)
           				solveInelasticCollision(norm, source, obj2);
 			}
 		}
@@ -207,18 +207,18 @@ bool Collider::isCollided(Collider* sample){
 		return false;
 	}
 
-	std::pair<float, float> c1 = {this->obj->x, this->obj->y};
-        std::pair<float, float> c2 = {sample->obj->x, sample->obj->y};
+	vector2f c1 = {this->obj->x, this->obj->y};
+        vector2f c2 = {sample->obj->x, sample->obj->y};
 
 
 	for (int i = 0; i < this->phys_model.getPointCount() - 1; i++){
                 for (int j = 0; j < sample->phys_model.getPointCount() - 1; j++){
 			auto a = sample->phys_model.getPoint(0);
 			
-			std::pair<float, float> point_1i = {this->phys_model.getPoint(i).x, this->phys_model.getPoint(i).y};
-                        std::pair<float, float> point_1iplus = {this->phys_model.getPoint(i+1).x, this->phys_model.getPoint(i+1).y};
-			std::pair<float, float> point_2j = {sample->phys_model.getPoint(j).x, sample->phys_model.getPoint(j).y};
-			std::pair<float, float> point_2jplus = {sample->phys_model.getPoint(j+1).x, sample->phys_model.getPoint(j+1).y};
+			vector2f point_1i = {this->phys_model.getPoint(i).x, this->phys_model.getPoint(i).y};
+                        vector2f point_1iplus = {this->phys_model.getPoint(i+1).x, this->phys_model.getPoint(i+1).y};
+			vector2f point_2j = {sample->phys_model.getPoint(j).x, sample->phys_model.getPoint(j).y};
+			vector2f point_2jplus = {sample->phys_model.getPoint(j+1).x, sample->phys_model.getPoint(j+1).y};
 
                         if (segmentCollision2(point_1i, point_1iplus, point_2j, point_2jplus, c1, c2)){
 				return true;
